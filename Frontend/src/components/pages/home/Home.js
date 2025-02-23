@@ -1,7 +1,7 @@
 import "./home.css";
 // import Hero from "./components/Hero";
 import Earth from "./components/Earth";
-import Navbar from "../temp/Navbar";
+// import Navbar from "../temp/Navbar";
 import Hero from "../temp/Hero";
 import Features from "../temp/Features";
 import About from "../temp/About";

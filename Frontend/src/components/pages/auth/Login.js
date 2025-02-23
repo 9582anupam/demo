@@ -8,14 +8,14 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [generalError, setGeneralError] = useState("");
-    const [isSubmitted, setIsSubmitted] = useState(false);
+    // const [isSubmitted, setIsSubmitted] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const { setIsUserLoggedIn } = useContext(UserContext);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setIsSubmitted(true);
+        // setIsSubmitted(true);
         setEmailError("");
         setGeneralError("");
         setError("");
