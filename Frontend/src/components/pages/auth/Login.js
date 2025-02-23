@@ -1,59 +1,7 @@
 import React, { useState, useContext } from "react";
-import {
-    Container,
-    TextField,
-    Button,
-    Typography,
-    Box,
-    Paper,
-    IconButton,
-    ThemeProvider,
-    createTheme,
-} from "@mui/material";
-import { styled } from "@mui/system";
 import { Link, useNavigate } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import "./auth.css";
-import axios from "axios";
 import { UserContext } from "../../../context/UserContext";
-
-// Define the custom theme
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: "#74B83E", // Primary color
-        },
-        secondary: {
-            main: "#52BD39", // Secondary color
-        },
-        background: {
-            default: "#F5FBF4", // Background color
-        },
-    },
-});
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    maxWidth: 400,
-    margin: "auto",
-    textAlign: "center",
-}));
-
-const StyledForm = styled("form")(({ theme }) => ({
-    width: "100%",
-    marginTop: theme.spacing(1),
-}));
-
-const SubmitButton = styled(Button)(({ theme }) => ({
-    margin: theme.spacing(3, 0, 2),
-}));
-
-const GoogleButton = styled(Button)(({ theme }) => ({
-    margin: theme.spacing(2, 0),
-}));
+import axios from "axios";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -109,97 +57,101 @@ const Login = () => {
     };
 
     return (
-        <ThemeProvider theme={theme}>
-            <div className="h-[calc(100svh-128px)] flex justify-center items-center">
-                <Container component="main" maxWidth="xs" className="relative">
-                    <StyledPaper elevation={3}>
-                        <div className="flex items-center">
-                            <IconButton
-                                onClick={() => navigate("/")}
-                                color="inherit"
-                                size="small"
-                                sx={{ position: "absolute", left: "2rem" }}>
-                                <ArrowBackIcon
-                                    sx={{ height: "35px", width: "35px" }}
+        <div className="min-h-screen -mt-32 bg-gradient-to-b from-gray-900 to-black text-white flex items-center justify-center px-4">
+            <div className="w-full max-w-md">
+                <div className="relative bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-gray-700">
+                    <button 
+                        onClick={() => navigate("/")}
+                        className="absolute left-6 top-6 p-2 text-gray-400 hover:text-purple-400 transition-colors"
+                    >
+                        <svg 
+                            className="h-6 w-6" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </button>
+                    
+                    <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
+                        Login
+                    </h2>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <div className="relative">
+                                <svg 
+                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                <input
+                                    type="email"
+                                    placeholder="Email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className={`w-full bg-gray-900/50 border ${emailError ? 'border-red-500' : 'border-gray-600'} rounded-lg py-3 px-10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500`}
                                 />
-                            </IconButton>
-                            <Typography
-                                variant="h4"
-                                gutterBottom
-                                sx={{ fontWeight: "bold", margin: "0 auto" }}>
-                                Login
-                            </Typography>
+                            </div>
+                            {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
                         </div>
 
-                        <StyledForm noValidate onSubmit={handleSubmit}>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                error={isSubmitted && !!emailError}
-                                helperText={isSubmitted && emailError}
-                            />
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                error={isSubmitted && !!generalError}
-                                helperText={isSubmitted && generalError}
-                            />
-                            {error && (
-                                <Typography
-                                    color="error"
-                                    variant="body2"
-                                    align="center">
-                                    {error}
-                                </Typography>
-                            )}
-                            <SubmitButton
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                sx={{ color: "white" }}>
-                                Login
-                            </SubmitButton>
-                            <GoogleButton
-                                fullWidth
-                                variant="outlined"
-                            // onClick={handleGoogleSignIn}
+                        <div>
+                            <div className="relative">
+                                <svg 
+                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <input
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className={`w-full bg-gray-900/50 border ${error ? 'border-red-500' : 'border-gray-600'} rounded-lg py-3 px-10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500`}
+                                />
+                            </div>
+                            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+                        </div>
+
+                        {generalError && (
+                            <p className="text-center text-red-500 text-sm">{generalError}</p>
+                        )}
+
+                        <button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
+                        >
+                            Login
+                        </button>
+
+                        <button
+                            type="button"
+                            className="w-full bg-gray-900/50 border border-gray-600 hover:border-purple-500 text-white font-semibold py-3 rounded-lg transition-colors"
+                        >
+                            Login with Google
+                        </button>
+
+                        <p className="text-center text-gray-400">
+                            Don't have an account?{' '}
+                            <Link 
+                                to="/signup" 
+                                className="text-purple-400 hover:text-purple-300 font-semibold transition-colors"
                             >
-                                Login with Google
-                            </GoogleButton>
-                            <Box mt={2}>
-                                <Typography variant="body2">
-                                    Don't have an account?{" "}
-                                    <Link
-                                        to="/signup"
-                                        className="text-[#00aaff] text-lg">
-                                        Sign Up
-                                    </Link>
-                                </Typography>
-                            </Box>
-                        </StyledForm>
-                    </StyledPaper>
-                </Container>
+                                Sign Up
+                            </Link>
+                        </p>
+                    </form>
+                </div>
             </div>
-        </ThemeProvider>
+        </div>
     );
 };
 
